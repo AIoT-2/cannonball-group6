@@ -3,11 +3,12 @@ package com.nhnacademy.game;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import java.awt.Color;
+import java.awt.Graphics;
+
 //Ball class에 볼이 차지하는 영역에 대한 정보 확인이 가능하도록 기능을 추가해보자.
 public class Ball23 { // 출력을 위한 logger 메서드
     private static final Logger logger = Logger.getLogger(Ball23.class.getName());
-
-    // 주어진 값들로 볼 생성이 되는지 확인하는 테스트
 
     public static void logging(Ball23 ball) {
         logger.log(Level.INFO, "Max X: " + ball.getMaxX());
@@ -19,7 +20,7 @@ public class Ball23 { // 출력을 위한 logger 메서드
 
     // Ball22 클래스 정의
 
-    private int x, y, radius;
+    public int x, y, radius;
 
     public Ball23(int x, int y, int radius) { // 생성자
             // 유효성 검사 추가
@@ -100,4 +101,48 @@ public class Ball23 { // 출력을 위한 logger 메서드
         return 2 * getRadius();
     }
 
+}
+
+// PaintableBall 클래스 정의
+class PaintableBall extends Ball23 {
+    private Color color;
+
+    //생성자
+    public PaintableBall(int x, int y, int radius, Color color) {
+        super(x, y, radius);  //Ball 클래스의 생성자 호출
+        this.color = color;   //PaintableBall의 색상 설정 
+    }
+
+
+    //색상 반환 메서드 
+    public Color getColor() {
+        return color;
+    }
+
+    // 색상 설정 메서드
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
+    //paint 메서드 : AWT Graphisc 인스턴스를 받아 그리기 수행
+    public void paint(Graphics g) {
+        //현재 설정된 색상을 저장 (나중에 기존 색상 복구를 위함)
+       Color originalColor = g.getColor();
+
+        //볼의 색상 설정
+        g.setColor(color);
+
+        // 원 그리기 (x와 y는 원을 그릴 사각형의 왼쪽 상단 모서리의 좌표임)
+        g.fillOval(x - radius, y - radius, radius*2, radius*2);
+
+        //원래의 색상 복구
+        g.setColor(originalColor);
+    }
+
+
+    @Override
+    public String toString() {
+        return String.format("[(%d, %d), %d, %s]", x, y, radius, color.toString());
+    
+    }
 }
