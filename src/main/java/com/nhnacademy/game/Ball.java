@@ -7,10 +7,21 @@ public class Ball {
     int radius;
 
     public Ball(int x, int y, int radius) {
-        this.x = x;
-        this.y = y;
-        this.radius = radius;
-    }
+        if (radius <= 0) {
+            throw new InvalidValueException();
+        }
+
+        if ((x == Integer.MIN_VALUE)
+         || (y == Integer.MIN_VALUE)
+         || ((Integer.MAX_VALUE - radius) < Math.abs(x))
+         || ((Integer.MAX_VALUE - radius) < Math.abs(y))) {
+            throw new OutOfBoundsException();
+         }
+
+         this.x = x;
+         this.y = y;
+         this.radius = radius;
+        }
 
     public int getX() {
         return x;
