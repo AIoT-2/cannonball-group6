@@ -2,26 +2,27 @@ package com.nhnacademy.game;
 
 public class Ball {
  
+
     int x;
     int y;
     int radius;
 
     public Ball(int x, int y, int radius) {
         if (radius <= 0) {
-            throw new InvalidValueException();
+            throw new InvalidSizeException();
         }
 
         if ((x == Integer.MIN_VALUE)
-         || (y == Integer.MIN_VALUE)
-         || ((Integer.MAX_VALUE - radius) < Math.abs(x))
-         || ((Integer.MAX_VALUE - radius) < Math.abs(y))) {
+                || (y == Integer.MIN_VALUE)
+                || ((Integer.MAX_VALUE - radius) < Math.abs(x))
+                || ((Integer.MAX_VALUE - radius) < Math.abs(y))) {
             throw new OutOfBoundsException();
-         }
-
-         this.x = x;
-         this.y = y;
-         this.radius = radius;
         }
+
+        this.x = x;
+        this.y = y;
+        this.radius = radius;
+    }
 
     public int getX() {
         return x;
