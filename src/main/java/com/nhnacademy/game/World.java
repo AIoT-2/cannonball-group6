@@ -11,9 +11,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class World extends JPanel {
-
-    static final Logger logger = LoggerFactory.getLogger(World.class);
-
+    
+    private static final Logger logger = LoggerFactory.getLogger(World.class);
     List<Ball> ballList = new LinkedList<>();
 
     public void add(Ball ball) {
@@ -25,7 +24,15 @@ public class World extends JPanel {
             throw new AlreadyExistException();
         }
 
+        if ((ball.getMinX() < getBounds().getMinX())
+                || (getBounds().getMaxX() < ball.getMaxX())
+                || (ball.getMinY() < getBounds().getMinY())
+                || (getBounds().getMaxY() < ball.getMaxY())) {
+            throw new OutOfBoundsException();
+
+        }
         ballList.add(ball);
+        logger.info("볼이 추가되었습니다: {}", ball);
     }
 
     public void remove(Ball ball) {
@@ -36,10 +43,13 @@ public class World extends JPanel {
         if (!ballList.remove(ball)) {
             throw new NoSuchElementException();
         }
+
+        logger.info("볼이 제거 되었습니다: {}", ball);
     }
 
     public void removeBall(int index) {
         ballList.remove(index);
+        logger.info("{}번째 볼이 제거 되었습니다", index);
     }
 
     public int getBallCount() {
