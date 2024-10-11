@@ -5,7 +5,7 @@ import java.awt.Graphics;
 
 public class PaintableBall extends Ball {
 
-    public static final Color DEFAULT_COLOR = Color.BLACK;
+    public static final Color DEFAULT_COLOR = Color.BLACK; // 컬러 선택은 여기서
  
     Color color;
 
