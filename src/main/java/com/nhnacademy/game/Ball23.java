@@ -1,96 +1,12 @@
 package com.nhnacademy.game;
 
-import java.util.List;
-import java.util.ArrayList;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import java.awt.Color;
-import java.awt.Graphics;
+import java.util.Random;
 
-import java.util.NoSuchElementException;
+import javax.swing.JFrame;
 
-//Ball class에 볼이 차지하는 영역에 대한 정보 확인이 가능하도록 기능을 추가해보자.
-public class Ball23 { 
-    //필드 : 볼 관리 리스트와 로거
-    private final List<Ball23> ballsList;  // 볼들을 관리할 리스트
-    private static final Logger logger = Logger.getLogger(Ball23.class.getName());
-
-    // 생성자 : 볼 리스트 초기화
-    public Ball23() {
-        ballsList = new ArrayList<>();  //ArrayList로 볼 리스트 초기화
-    }  
-
-    // 볼 추가 메서드
-    public void addBall(Ball23 ball){
-        if (ball == null) {
-            throw new NullPointerException("Ball cannot be null");
-        }
-        if (ballsList.contains(ball)) {
-            throw new AlreadyExistException("Ball already exists in the list");
-        }
-        ballsList.add(ball);
-        logger.info("Ball added: " + ball);
-    }
-
-    // 볼 제거 메서드 (Ball로 제거)
-    public void removeBall(Ball23 ball) {
-        if(ball == null) {
-            throw new NullPointerException("Ball cannot be null");
-        }
-        if (!ballsList.contains(ball)) {
-            throw new NoSuchElementException("Ball not found in the list");
-        }
-        ballsList.remove(ball);
-        logger.info("Ball removed: " + ball);
-    }
-
-    //볼 제거 메서드 (index 로 제거)
-    public void removeBall(int index) {
-        if (index < 0 || index >= ballsList.size()) {
-            throw new IndexOutOfBoundsException("Invalid index: "+ index);
-        }
-        Ball23 removedBall = ballsList.remove(index);
-        logger.info("Ball removed at index" +index + ": " + removedBall);
-    }
-
-    // 관리 중인 볼의 개수를 반환하는 메서드
-    public int getBallCount() {
-        return ballsList.size();
-    }
-
-    //특정 위치의 볼을 가져오는 메서드
-    public Ball23 getBall(int index) {
-        if (index <0 || index >= ballsList.size()) {
-            throw new IndexOutOfBoundsException("Invalid index: " + index);
-        }
-        return ballsList.get(index);
-    }
-
-    //관리 중인 모든 볼을 그리는 메서드 (paintComponent 재정의)
-    public void paintComponent(Graphics g) {
-        for (Ball23 ball : ballsList) {
-            if (ball instanceof PaintableBall) {
-                ((PaintableBall) ball).paint(g);
-            }
-        }
-        logger.info("All paintable balls have been painted");
-    }
-
-}
-
-
-    public static void logging(Ball23 ball) {
-        logger.log(Level.INFO, "Max X: " + ball.getMaxX());
-        logger.log(Level.INFO, "Min X: " + ball.getMinX());
-        logger.log(Level.INFO, "Max Y: " + ball.getMaxY());
-        logger.log(Level.INFO, "Min Y: " + ball.getMinY());
-
-    }
-
-    // Ball22 클래스 정의
-
+ // Ball 클래스 : 개별 공 객체를 나타낸다.
+public class Ball23 {
     public int x, y, radius;
 
     public Ball23(int x, int y, int radius) { // 생성자
@@ -111,44 +27,16 @@ public class Ball23 {
             this.radius = radius; // 반지름
         }
 
-    // Getter (선택 사항, private 변수에 접근하기 위해 사용)
-    public int getX() {
-        return x;
-    }
+ // Getter methods (선택 사항, private 변수에 접근하기 위해 사용)
+    public int getX() {return x;}
 
-    public int getY() {
-        return y;
-    }
+    public int getY() {return y;}
 
-    public int getRadius() {
-        return radius;
-    }
+    public int getRadius() {return radius;}
 
-    // toString() 메서드 : Ball 객체의 정보를 문자열로 반환
-    @Override
-    public String toString() {
-        return "Ball{" +
-                "(x=" + x +
-                ", y=" + y +
-                "), radius=" + radius +
-                '}';
 
-    }
-
-    // Setter (선택사항, private 변수를 수정하기 위해 사용)
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public void setY(int y) {
-        this.y = y;
-    }
-
-    public void setRadius(int radius) {
-        this.radius = radius;
-    }
-
-    public int getMinX() { // ball의 영역 중 최소 x좌표값
+// 영역 정보를 반환하는 메서드
+ public int getMinX() { // ball의 영역 중 최소 x좌표값
         return getX() - getRadius();
     }
 
@@ -172,57 +60,79 @@ public class Ball23 {
         return 2 * getRadius();
     }
 
-}
-
-// PaintableBall 클래스 정의
-class PaintableBall extends Ball23 {
-
-    //기본 색 정의 (Google 스타일 가이드에 따르면 상수는 대문자 및 밑줄로 표기)
-    private static final Color DEFAULT_COLOR = Color.BLACK;
-
-    // 볼의 색을 저장할 필드
-    private Color color;
-
-    // 색을 지정하는 생성자
-    public PaintableBall(int x, int y, int radius, Color color) {
-        super(x, y, radius);  //부모 클래스인 Ball의 생성자 호출
-        this.color = color;   //PaintableBall의 색상 설정 
+    // Setter (선택사항, private 변수를 수정하기 위해 사용)
+    public void setX(int x) {
+        this.x = x;
     }
 
-    //색을 지정하지 않는 생성자 (기본 색을 사용)
-    public PaintableBall(int x, int y, int radius) {
-        this(x, y, radius, DEFAULT_COLOR);   //위의 생성자를 호출하여 기본 색을 사용
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    public void setRadius(int radius) {
+        this.radius = radius;
     }
 
 
-    //색상 반환 메서드 
-    public Color getColor() {
-        return color;
-    }
 
-    // 색상 설정 메서드
-    public void setColor(Color color) {
-        this.color = color;
-    }
-
-    //paint 메서드 : AWT Graphisc 인스턴스를 받아 그리기 수행
-    public void paint(Graphics g) {
-        // 이전 색을 저장(나중에 기존 색상 복구를 위함)
-       Color prevColor = g.getColor();
-
-        //새로운 색 설정
-        g.setColor(color);
-
-        // 원 그리기 (x와 y는 원을 그릴 사각형의 왼쪽 상단 모서리의 좌표임)
-        g.fillOval(x - radius, y - radius, radius*2, radius*2);
-
-        // 이전 색 복원
-        g.setColor(prevColor);
-    }
-
-
-    @Override
+@Override
     public String toString() {
-        return String.format("[(%d, %d), %d, %s]", x, y, radius, color.toString());
+        return "Ball{" +
+                "(x=" + x +
+                ", y=" + y +
+                "), radius=" + radius +
+                '}';
+
+    }
+
+
+// @Override
+// public String toString() {
+//     return String.format("Ball at (%d, %d) with radius %d", x, y, radius);
+//     }
+}
+
+
+
+   // BallWorldApp 클래스 : 메인 실행 부분, JFrame을 이용한 화면 출력
+class BallWorldApp {
+    public static void main(String[] args) throws AlreadyExistException {
+        //JFrame 생성 및 설정
+        JFrame frame = new JFrame("Ball World");
+        frame.setSize(800, 600); //Window 크기 설정
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // World 패널 생성 및 추가
+        BallPanel world = new BallPanel();
+        frame.add(world);
+        frame.setVisible(true);
+
+        // 랜덤한 위치와 색상, 크기로 Ball과 PaintableBall 생성
+        Random rand = new Random();
+        for (int i=0; i<10; i++){
+            int x = rand.nextInt(750); // frame 사이즈 가로 800이라서
+            int y = rand.nextInt(550); //frame 사이즈 세로 600이라서
+            int radius = 10 + rand.nextInt(41); //반지름 10-50
+            Color color = new Color(rand.nextInt(256), rand.nextInt(256), rand.nextInt(256)); 
+            // RGB 색상의 각 성분(빨강, 초록, 파랑)이 0부터 255까지의 값을 가질 수 있기 때문에 256을 사용해 무작위 색상 생성
+
+            Ball23 ball;
+            if (rand.nextBoolean()) {
+                ball = new PaintableBall(x, y, radius, color);
+            } else {
+                ball = new Ball23(x, y, radius);  //Ball 클래스는 PaintableBall 과 달리 화면에 그려지지 않음
+            }
+
+
+            world.addBall(ball);  //볼 추가
+        }
+
     }
 }
+
+   
+
+   
+    // toString() 메서드 : Ball 객체의 정보를 문자열로 반환
+    
+
