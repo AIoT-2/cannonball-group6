@@ -124,7 +124,9 @@ class BallWorldApp {
 
             Ball23 ball;
             if (rand.nextBoolean()) {
-                ball = new PaintableBall(x, y, radius, color); // 색이 있는 공 생성
+                int dx = rand.nextInt(11)-5;  //-5부터 5까지의 변위량을 랜덤으로 설정
+                int dy = rand.nextInt(11)-5; //-5부터 5까지의 변위량을 랜덤으로 설정
+                ball = new PaintableBall(x, y, radius, color, dx, dy); // 색이 있는 공 생성
             } else {
                 ball = new Ball23(x, y, radius);  //일반 공 생성
             }

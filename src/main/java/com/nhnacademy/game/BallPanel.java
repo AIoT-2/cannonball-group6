@@ -1,27 +1,47 @@
 package com.nhnacademy.game;
 
+import javax.swing.JPanel;
 import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.logging.Logger;
 import java.util.logging.Level;
 
-import javax.swing.JPanel;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 
 //Ball Panel 클래스 : 공들을 관리하고 그리는 패널
-class BallPanel extends JPanel{ 
+class BallPanel extends JPanel implements ActionListener { 
     //필드 : 볼 관리 리스트와 로거
     private final List<Ball23> ballsList = new ArrayList<>();  // 볼들을 관리할 리스트
     private static final Logger logger = Logger.getLogger(BallPanel.class.getName());
-
-    public static void logging(Ball23 ball) {
+    
+ public static void logging(Ball23 ball) {
         logger.log(Level.INFO, "Max X: " + ball.getMaxX());
         logger.log(Level.INFO, "Min X: " + ball.getMinX());
         logger.log(Level.INFO, "Max Y: " + ball.getMaxY());
         logger.log(Level.INFO, "Min Y: " + ball.getMinY());
 
     }
+
+    public Timer timer;
+
+    public BallPanel() {
+        timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                repaint(); //매 50ms 마다 재설정
+            }
+        }, 0, 50);  //0ms 후 시작, 50ms 주기로 실행
+    }
+
+   
     
     // 볼 추가 메서드
     public void addBall(Ball23 ball) throws AlreadyExistException{
@@ -83,4 +103,14 @@ protected void paintComponent(Graphics g) {
     }
     logger.info("그릴 수 있는 모든 공들이 그려졌습니다.");
    } 
+
+   @Override
+   public void actionPerformed(ActionEvent e) {
+    for (Ball23 ball : ballsList) { //수정: ballsList 사용
+        if( ball instanceof PaintableBall) { // paintableBall인지 확인
+            ((PaintableBall) ball).move(); //이동 호출
+        }
+    }
+    repaint();
+   }
 }
