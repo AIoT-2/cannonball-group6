@@ -109,7 +109,13 @@ class BallWorldApp {
 
         // 랜덤한 위치와 색상, 크기로 Ball과 PaintableBall 생성
         Random rand = new Random();
-        for (int i=0; i<10; i++){
+        int ballCount = 10; // 추가할 공의 개수
+        int addedBallCount = 0;
+
+
+// 월드에 볼 추가시 볼의 모든 부분이 월드의 영역 안에 포함되는지 확인하고 추가하는 반복문
+        while (addedBallCount < ballCount) {
+            try{
             int x = rand.nextInt(750); // frame 사이즈 가로 800이라서
             int y = rand.nextInt(550); //frame 사이즈 세로 600이라서
             int radius = 10 + rand.nextInt(41); //반지름 10-50
@@ -118,21 +124,29 @@ class BallWorldApp {
 
             Ball23 ball;
             if (rand.nextBoolean()) {
-                ball = new PaintableBall(x, y, radius, color);
+                ball = new PaintableBall(x, y, radius, color); // 색이 있는 공 생성
             } else {
-                ball = new Ball23(x, y, radius);  //Ball 클래스는 PaintableBall 과 달리 화면에 그려지지 않음
+                ball = new Ball23(x, y, radius);  //일반 공 생성
             }
 
+            // 공의 영역이 월드(800X600) 안에 포함되는지 확인
+            if (isWithinBounds (ball, frame.getWidth(), frame.getHeight())) {
+                world.addBall(ball); //볼 추가
+                addedBallCount++; // 추가된 볼 개수 증가
+            } else {
+                throw new OutOfBoundsException("공이 월드 영역 밖입니다.");
+            }
 
-            world.addBall(ball);  //볼 추가
+        } catch (OutOfBoundsException e) {
+            System.out.println(e.getMessage() + "해당 볼을 폐기하고 다시 시도합니다.");
         }
-
     }
 }
 
-   
-
-   
-    // toString() 메서드 : Ball 객체의 정보를 문자열로 반환
-    
+//  공이 월드 안에 있는지 확인하는 메서드
+public static boolean isWithinBounds(Ball23 ball, int worldWidth, int worldHeight) {
+        return (ball.getMinX() >= 0 && ball.getMaxX() <= worldWidth &&
+                ball.getMinY() >= 0 && ball.getMaxY() <= worldHeight);
+    }
+}   
 
