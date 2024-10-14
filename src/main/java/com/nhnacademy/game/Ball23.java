@@ -2,12 +2,16 @@ package com.nhnacademy.game;
 
 import java.awt.Color;
 import java.util.Random;
+import java.awt.Point;
 
-import javax.swing.JFrame;
+import javax.swing.*;
+import java.awt.*;
+
 
  // Ball 클래스 : 개별 공 객체를 나타낸다.
 public class Ball23 {
-    public int x, y, radius;
+    public int radius;
+    public Point location; //Ball의 위치
 
     public Ball23(int x, int y, int radius) { // 생성자
             // 유효성 검사 추가
@@ -22,34 +26,33 @@ public class Ball23 {
                 throw new OutOfBoundsException("y coordinate is out of bounds");
             }
 
-            this.x = x; // x좌표
-            this.y = y; // y좌표
+            this.location = new Point(x, y); //Point로 좌표 설정
             this.radius = radius; // 반지름
         }
 
  // Getter methods (선택 사항, private 변수에 접근하기 위해 사용)
-    public int getX() {return x;}
+    public int getCenterX() {return location.x;}
 
-    public int getY() {return y;}
+    public int getCenterY() {return location.y;}
 
     public int getRadius() {return radius;}
 
 
 // 영역 정보를 반환하는 메서드
  public int getMinX() { // ball의 영역 중 최소 x좌표값
-        return getX() - getRadius();
+        return getCenterX() - getRadius();
     }
 
     public int getMaxX() { // ball의 영역 중 최대 x좌표값
-        return getX() + getRadius();
+        return getCenterX() + getRadius();
     }
 
     public int getMinY() { // ball의 영역 중 최소 y좌표값
-        return getY() - getRadius();
+        return getCenterY() - getRadius();
     }
 
     public int getMaxY() { // ball의 영역 중 최대 y좌표값
-        return getY() + getRadius();
+        return getCenterY() + getRadius();
     }
 
     public int getWidth() { // ball의 영역 넓이(x축의 길이)
@@ -61,12 +64,12 @@ public class Ball23 {
     }
 
     // Setter (선택사항, private 변수를 수정하기 위해 사용)
-    public void setX(int x) {
-        this.x = x;
+    public void setCenterX(int x) {
+        this.location.x = x;
     }
 
-    public void setY(int y) {
-        this.y = y;
+    public void setCenterY(int y) {
+        this.location.y = y;
     }
 
     public void setRadius(int radius) {
@@ -77,11 +80,7 @@ public class Ball23 {
 
 @Override
     public String toString() {
-        return "Ball{" +
-                "(x=" + x +
-                ", y=" + y +
-                "), radius=" + radius +
-                '}';
+        return String.format("Ball at center (%d, %d) with radius %d", getCenterX(), getCenterY(), radius);
 
     }
 
