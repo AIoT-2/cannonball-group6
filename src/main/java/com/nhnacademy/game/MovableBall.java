@@ -1,12 +1,12 @@
 package com.nhnacademy.game;
 
 import java.awt.Color;
+import java.awt.Point;
 import java.util.UUID;
 
 public class MovableBall extends PaintableBall {
-
+    
     int dx;
-
     int dy;
 
     public MovableBall(UUID id, int x, int y, int radius, Color color) {
@@ -36,7 +36,6 @@ public class MovableBall extends PaintableBall {
     public int getDY() {
         return dy;
     }
-
     public void setDX(int dx) {
         this.dx = dx;
     }
@@ -46,12 +45,11 @@ public class MovableBall extends PaintableBall {
     }
 
     public void move() {
-        moveTo(getX() + getDX(), getY() + getDY());
-        logger.trace("{} - ({},{})", getId(), getX(), getY());
+        moveTo(getCenterX() + getDX(), getCenterY() + getDY());
+        logger.trace("{} - ({},{})", getId(), getCenterX(), getCenterY());
     }
 
     public void moveTo(int x, int y) {
-        setX(x);
-        setY(y);
+        setLocation(new Point(x, y));
     }
 }

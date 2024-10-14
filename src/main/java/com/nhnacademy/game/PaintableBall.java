@@ -46,8 +46,8 @@ public class PaintableBall extends Ball {
 
     @Override
     public String toString() {
-        return String.format("[%s,(%d,%d),%d,%s]",
-                getId(), getX(), getY(), getRadius(), getColor());
+        return String.format("[%s,%s,%d,%s]",
+                getId(), getLocation(), getRadius(), getColor());
     }
 
     public void paint(Graphics g) {

@@ -17,8 +17,8 @@ public class BoundedWorld extends MovableWorld {
                 Ball ball = getBall(i);
                 if (ball instanceof MovableBall) {
                     MovableBall movableBall = (MovableBall) ball;
-                    int x2 = movableBall.getX() + movableBall.getDX();
-                    int y2 = movableBall.getY() + movableBall.getDY();
+                    int x2 = movableBall.getCenterX() + movableBall.getDX();
+                    int y2 = movableBall.getCenterY() + movableBall.getDY();
                     int x3 = x2;
                     int y3 = y2;
 

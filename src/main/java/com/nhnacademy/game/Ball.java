@@ -1,5 +1,6 @@
 package com.nhnacademy.game;
 
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.UUID;
 
@@ -14,10 +15,7 @@ public class Ball {
 
     String name;
 
-    int x;
-    int y;
-
-    int radius;
+    Rectangle bounds;
 
     public Ball(UUID id, int x, int y, int radius) {
         if (radius <= 0) {
@@ -33,9 +31,7 @@ public class Ball {
 
         this.id = id;
         this.name = id.toString();
-        this.x = x;
-        this.y = y;
-        this.radius = radius;
+        this.bounds = new Rectangle(x - radius, y - radius, 2 * radius, 2 * radius);
     }
 
     public Ball(String id, int x, int y, int radius) {
@@ -54,71 +50,69 @@ public class Ball {
         return name;
     }
 
+    public Point getLocation() {
+        return bounds.getLocation();
+    }
+
+    void setLocation(Point location) {
+        bounds.setLocation(location);
+    }
+
     public void setName(String name) {
         this.name = name;
     }
 
-    public int getX() {
-        return x;
+    public Rectangle getBounds() {
+        return bounds;
     }
 
-    protected void setX(int x) {
-        this.x = x;
+    public int getCenterX() {
+        return (int) bounds.getCenterX();
     }
 
-    public int getY() {
-        return y;
-    }
-
-    protected void setY(int y) {
-        this.y = y;
+    public int getCenterY() {
+        return (int) bounds.getCenterY();
     }
 
     public int getRadius() {
-        return radius;
+        return (int) bounds.getWidth() / 2;
     }
 
     public int getMinX() {
-        return getX() - getRadius();
+        return (int) bounds.getMinX();
     }
 
     public int getMaxX() {
-        return getX() + getRadius();
+        return (int) bounds.getMaxX();
     }
 
     public int getMinY() {
-        return getY() - getRadius();
+        return (int) bounds.getMinY();
     }
 
     public int getMaxY() {
-        return getY() + getRadius();
+        return (int) bounds.getMaxY();
     }
 
     public int getWidth() {
-        return 2 * getRadius();
+        return (int) bounds.getWidth();
     }
 
     public int getHeight() {
-        return 2 * getRadius();
+        return (int) bounds.getHeight();
     }
 
     public boolean isCollision(Ball ball) {
-        return !((ball.getMaxX() < getMinX())
-                || (ball.getMinX() > getMaxX())
-                || (ball.getMaxY() < getMinY())
-                || (ball.getMinY() > getMaxY()));
+        return getBounds().intersects(ball.getBounds());
     }
 
     public Rectangle intersection(Ball ball) {
-        Rectangle rect1 = new Rectangle(getMinX(), getMinY(), getWidth(), getHeight());
-        Rectangle rect2 = new Rectangle(ball.getMinX(), ball.getMinY(), ball.getWidth(), ball.getHeight());
-
-        return rect1.intersection(rect2);
+        return getBounds().intersection(ball.getBounds());
     }
 
     @Override
     public String toString() {
-        return String.format("[%s, (%d,%d),%d]",
-                getId(), getX(), getY(), getRadius());
+        return String.format("[%s,%s,%d]",
+                getId(), getLocation(), getRadius());
     }
 }

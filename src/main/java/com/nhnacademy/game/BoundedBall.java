@@ -57,14 +57,27 @@ public class BoundedBall extends MovableBall {
 
     @Override
     public void move() {
-        super.move();
+        int x2 = getCenterX() + getDX();
+        int y2 = getCenterY() + getDY();
+        int x3 = x2;
+        int y3 = y2;
 
-        if ((getMinX() < boundedArea.getMinX()) || (getMaxX() > boundedArea.getMaxX())) {
+        if (x2 - getRadius() < boundedArea.getMinX()) {
+            x3 = 2 * (getMaxX() - getRadius()) - x2;
+            setDX(-getDX());
+        } else if (x2 + getRadius() > boundedArea.getMaxX()) {
+            x3 = 2 * (getMinX() + getRadius()) - x2;
             setDX(-getDX());
         }
 
-        if ((getMinY() < boundedArea.getMinY()) || (getMaxY() > boundedArea.getMaxY())) {
+        if (getMinY() < boundedArea.getMinY()) {
+            y3 = 2 * (getMaxY() - getRadius()) - y2;
+            setDY(-getDY());
+        } else if (getMaxY() > boundedArea.getMaxY()) {
+            y3 = 2 * (getMinY() + getRadius()) - y2;
             setDY(-getDY());
         }
+
+        moveTo(x3, y3);
     }
 }
