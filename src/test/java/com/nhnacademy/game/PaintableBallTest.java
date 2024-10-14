@@ -15,10 +15,10 @@ public class PaintableBallTest {
     
     @Test  // 가장 기본적인 테스트. 특정 상황에 대한 간단한 검증 가능. 단점: 반복적인 검증은 따로 구현해야 한다.
     public void testBallMovement() { //주어진 dx와 dy에 따라 공이 올바르게 이동하는지 확인
-        PaintableBall ball = new PaintableBall(0, 0, 10, Color.RED, 5, 10);
+        PaintableBall ball = new PaintableBall(0, 0, 10, 5, 10);
         ball.move(); //한번 이동
-        assertEquals(5, ball.getX(), "Ball should move to x = 5");
-        assertEquals(10, ball.getY(), "Ball should move to y= 10");
+        assertEquals(5, ball.getCenterX(), "Ball should move to x = 5");
+        assertEquals(10, ball.getCenterY(), "Ball should move to y= 10");
     }
     
 }
@@ -27,10 +27,10 @@ class PaintableBallRepeatedTest { //특정 이동을 여러번 반복하여 이�
 
     @RepeatedTest(10)  //10번 반복
     public void testBallMovementRepeated() {
-        PaintableBall ball = new PaintableBall(0, 0, 10, Color.RED, 5, 10);
+        PaintableBall ball = new PaintableBall(0, 0, 10,  5, 10);
         ball.move(); //한번 이동
-        assertEquals(5, ball.getX(), "Ball should move to x = 5");
-        assertEquals(10, ball.getY(), "Ball should move to y = 10");
+        assertEquals(5, ball.getCenterX(), "Ball should move to x = 5");
+        assertEquals(10, ball.getCenterY(), "Ball should move to y = 10");
     }
 }
 
@@ -44,9 +44,9 @@ class PaintableBallParameterizedTest {//다양한 dx, dy 값으로 공의 이동
         "100, 200, 0, 0, 100, 200"
     })
     public void testBallMovementParameterized(int startX, int startY, int dx, int dy, int expectedX, int expectedY) {
-        PaintableBall ball = new PaintableBall(startX, startY, 10, Color.RED, dx, dy);
+        PaintableBall ball = new PaintableBall(startX, startY, 10, dx, dy);
         ball.move(); //한번 이동
-        assertEquals(expectedX, ball.getX(), "Ball shoudl move to x = " + expectedX);
-        assertEquals(expectedY, ball.getY(), "Ball should move to y=" +expectedY);
+        assertEquals(expectedX, ball.getCenterX(), "Ball shoudl move to x = " + expectedX);
+        assertEquals(expectedY, ball.getCenterY(), "Ball should move to y=" +expectedY);
     }
 }

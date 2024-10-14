@@ -48,20 +48,20 @@ public class BoundedWorld extends JPanel{
         Rectangle worldBounds = getBounds();
 
     // x축 조정
-    if (ball.getX() - ball.getRadius() < worldBounds.getX()) {
-        ball.setX((int) worldBounds.getX() + ball.getRadius());
+    if (ball.getCenterX() - ball.getRadius() < worldBounds.getX()) {
+        ball.setCenterX((int) worldBounds.getX() + ball.getRadius());
         ball.setDX(Math.abs(ball.getDX())); //오른쪽으로 튕김
-    } else if (ball.getX() + ball.getRadius() > worldBounds.getMaxX()) {
-        ball.setX((int) worldBounds.getMaxX() - ball.getRadius());
+    } else if (ball.getCenterX() + ball.getRadius() > worldBounds.getMaxX()) {
+        ball.setCenterX((int) worldBounds.getMaxX() - ball.getRadius());
         ball.setDX(-Math.abs(ball.getDX())); //왼쪽으로 튕김
     }
 
     //y축 조정
-    if(ball.getY() - ball.getRadius() < worldBounds.getY()) {
-        ball.setY((int) worldBounds.getY() + ball.getRadius());
+    if(ball.getCenterY() - ball.getRadius() < worldBounds.getY()) {
+        ball.setCenterY((int) worldBounds.getY() + ball.getRadius());
         ball.setDY(Math.abs(ball.getDY())); //아래로 튕김
-    } else if (ball.getY() + ball.getRadius() > worldBounds.getMaxY()) {
-        ball.setY((int) worldBounds.getMaxY() - ball.getRadius());
+    } else if (ball.getCenterY() + ball.getRadius() > worldBounds.getMaxY()) {
+        ball.setCenterY((int) worldBounds.getMaxY() - ball.getRadius());
         ball.setDY(-Math.abs(ball.getDY())); //위로 튕김
     }
     }

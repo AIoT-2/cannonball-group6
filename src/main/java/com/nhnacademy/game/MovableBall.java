@@ -1,9 +1,7 @@
 package com.nhnacademy.game;
 
 import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.Rectangle;
-import java.util.UUID;
 import java.util.logging.Logger;
 
 //MovableBall 클래스
@@ -46,30 +44,30 @@ public class MovableBall extends PaintableBall {
         if( !boundedArea.contains(newBounds)) {
             //X축 경계 검사
             if(newBounds.x < boundedArea.x) {  //왼쪽 벽에 부딫힘
-                x = boundedArea.x + radius; //왼쪽 벽에 맞게 조정
-                dx = Math.abs(dx); //오른쪽으로 진행
+                super.setCenterX(boundedArea.x + getRadius());  //왼쪽 벽에 맞게 조정
+                super.setDX(Math.abs(super.getDX())); //오른쪽으로 진행
             } else if (newBounds.x + newBounds.width > boundedArea.x + boundedArea.width) { //오른쪽 벽에 부딫힘
-                x = boundedArea.x + boundedArea.width - radius*2; // 오른쪽 벽에 맞게 조정
-                dx = -Math.abs(dx); // 왼쪽으로 진행
+                super.setCenterX(boundedArea.x + boundedArea.width - radius*2); // 오른쪽 벽에 맞게 조정
+                super.setDX(-Math.abs(super.getDX())); // 왼쪽으로 진행
             }
 
             //Y축 경계 검사
             if (newBounds.y < boundedArea.y) { //위쪽 벽에 부딪힘
-                y = boundedArea.y + radius; //위쪽 벽에 맞게 조정
-                dy = Math.abs(dy);  //아래로 진행
+                super.setCenterY(boundedArea.y + getRadius()); //위쪽 벽에 맞게 조정
+                super.setDY(Math.abs(super.getDY())); //아래로 진행
             } else if (newBounds.y + newBounds.height > boundedArea.y + boundedArea.height ) {//아래쪽 벽에 부딪힘
-                y = boundedArea.y + boundedArea.height - radius*2; //아래쪽 벽에 맞게 조정
-                dy = -Math.abs(dy); //위쪽으로 진행
+                super.setCenterY(boundedArea.y + boundedArea.height - getRadius()*2); //아래쪽 벽에 맞게 조정
+                super.setDY(-Math.abs(super.getDY())); //위쪽으로 진행
             }
         }
             //이동 후 위치를 로그로 기록
-            logger.finer(String.format("MovableBall moved to position (%d, %d) with bounded area %s", x, y, boundedArea));
+            logger.finer(String.format("MovableBall moved to position (%d, %d) with bounded area %s", super.getCenterX(), super.getCenterY(), boundedArea));
     }
 
 
     // 볼의 경계 박스 반환
     public Rectangle getBounds() {
-        return new Rectangle(x - radius, y - radius, radius*2, radius *2 );
+        return new Rectangle(super.getCenterX() - getRadius(), super.getCenterY() - getRadius(), getRadius()*2, getRadius() *2 );
     }
 
 }

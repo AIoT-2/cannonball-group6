@@ -7,6 +7,7 @@ import java.util.UUID;
 import java.util.logging.Logger;
 
 import java.util.Random;
+import java.awt.Point;
 
 
 // PaintableBall 클래스 : 색상 정보를 포함한 그릴 수 있는 공 객체
@@ -22,6 +23,8 @@ public class PaintableBall extends Ball23 {
     public int dx; //x축 변위량
     public int dy; //Y축 변위량
     private static final Random RANDOM = new Random();  //Random 인스턴스 생성
+
+    private Point position; //공의 위치를 관리하는 Point 객체
 
     //고유 식별자를 포함하는 생성자
     public PaintableBall(String id, String name, int x, int y, int radius, Color color, int dx, int dy) {
@@ -45,6 +48,7 @@ public class PaintableBall extends Ball23 {
 
         this.dx = dx;
         this.dy = dy;
+        this.position = new Point(x, y); //위치 초기화
 
         // Trace 로그 추가
         logger.info(String.format("PaintableBall created [ID: %s, Name: %s] at (%d, %d) with radius: %d, dx: %d, dy: %d",
@@ -94,16 +98,14 @@ public class PaintableBall extends Ball23 {
 
     public void move(){
         // 현재 위치에서 변위량만큼 이동
-        x += dx;
-        y += dy;
+        position.translate(dx, dy); //Point 클래스의 translate 메서드 사용
 
         // 이동 후 좌표를 로그로 기록
-        logger.finer(String.format("Ball moved to position (%d, %d) with dx: %d, dy: %d", x, y, dx, dy));
+        logger.finer(String.format("Ball moved to position (%d, %d) with dx: %d, dy: %d", position.x, position.y, dx, dy));
     }
 
     void moveTo(int x, int y){
-        this.x = x;
-        this.y = y;
+        position.setLocation(x, y); //Point 클래스의 setLocation 메서드 사용
     }
 
     //색상 반환 메서드 
@@ -125,18 +127,18 @@ public class PaintableBall extends Ball23 {
         g.setColor(color);
 
         // 원 그리기 (x와 y는 원을 그릴 사각형의 왼쪽 상단 모서리의 좌표임)
-        g.fillOval(x - radius, y - radius, radius*2, radius*2);
+        g.fillOval(position.x - radius, position.y - radius, radius*2, radius*2);
 
         // 이전 색 복원
         g.setColor(prevColor);
 
         // 그릴 때마다 로그 출력
-        logger.finest(String.format("Ball painted at (%s, %s) with color: %s", id, name, x, y, color.toString()));
+        logger.finest(String.format("Ball painted at (%s, %s) with color: %s", id, name, position.x, position.y, color.toString()));
     }
 
 
     @Override
     public String toString() {
-        return String.format("[(%s, %s), %d, %s]", id, name, x, y, radius, color.toString());
+        return String.format("[(%s, %s), %d, %s]", id, name, position.x, position.y, radius, color.toString());
     }
 }
