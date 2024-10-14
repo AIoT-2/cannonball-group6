@@ -18,13 +18,54 @@ class Main {
 
         frame2.add(MovableWorld);
         frame2.setSize(800, 600);
-        frame2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame2.setVisible(true);
-
-        // 공 추가 예시
-        for ( int i= 0; i<5; i++){
-            int radius = new Random().nextInt(41)+10; //10~50의 반지름
-            int dx = new Random().nextInt(21)+10; //10~30의 랜덤 dx
+        frame2.setDefaultCloseOperatApp {
+            public static void main(String[] args) throws AlreadyExistException {
+                // JFrame 생성 및 설정
+                JFrame frame = new JFrame("Ball World");
+                frame.setSize(800, 600); // Window 크기 설정
+                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+                // World 패널 생성 및 추가
+                BallPanel world = new BallPanel();
+                frame.add(world);
+                frame.setVisible(true);
+        
+                // 랜덤한 위치와 색상, 크기로 Ball과 PaintableBall 생성
+                Random rand = new Random();
+                int ballCount = 10; // 추가할 공의 개수
+                int addedBallCount = 0;
+        
+                // 월드에 볼 추가시 볼의 모든 부분이 월드의 영역 안에 포함되는지 확인하고 추가하는 반복문
+                while (addedBallCount < ballCount) {
+                    try {
+                        int x = rand.nextInt(750); // frame 사이즈 가로 800이라서
+                        int y = rand.nextInt(550); // frame 사이즈 세로 600이라서
+                        int radius = 10 + rand.nextInt(41); // 반지름 10-50
+                        Color color = new Color(rand.nextInt(256), rand.nextInt(256), rand.nextInt(256));
+                        // RGB 색상의 각 성분(빨강, 초록, 파랑)이 0부터 255까지의 값을 가질 수 있기 때문에 256을 사용해 무작위 색상 생성
+        
+                        Ball23 ball;
+                        if (rand.nextBoolean()) {
+                            int dx = rand.nextInt(11) - 5; // -5부터 5까지의 변위량을 랜덤으로 설정
+                            int dy = rand.nextInt(11) - 5; // -5부터 5까지의 변위량을 랜덤으로 설정
+                            ball = new PaintableBall(x, y, radius, dx, dy); // 기본 색을 사용하는 공 생성
+                        } else {
+                            ball = new Ball23(x, y, radius); // 일반 공 생성
+                        }
+        
+                        // 공의 영역이 월드(800X600) 안에 포함되는지 확인
+                        if (isWithinBounds(ball, frame.getWidth(), frame.getHeight())) {
+                            world.addBall(ball); // 볼 추가
+                            addedBallCount++; // 추가된 볼 개수 증가
+                        } else {
+                            throw new OutOfBoundsException("공이 월드 영역 밖입니다.");
+                        }
+        
+                    } catch (OutOfBoundsException e) {
+                        System.out.println(e.getMessage() + "해당 볼을 폐기하고 다시 시도합니다.");
+                    }
+                }
+            }).nextInt(21)+10; //10~30의 랜덤 dx
             int dy = new Random().nextInt(21) + 10; //10~30의 랜덤 dy
             PaintableBall ball2 = new PaintableBall(100, 100, radius, dx, dy);
             MovableWorld.addBall(ball2);

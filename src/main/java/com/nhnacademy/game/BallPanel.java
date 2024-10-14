@@ -10,18 +10,16 @@ import java.util.TimerTask;
 import java.util.logging.Logger;
 import java.util.logging.Level;
 
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-
 //Ball Panel 클래스 : 공들을 관리하고 그리는 패널
-class BallPanel extends JPanel implements ActionListener { 
-    //필드 : 볼 관리 리스트와 로거
-    private final List<Ball23> ballsList = new ArrayList<>();  // 볼들을 관리할 리스트
+class BallPanel extends JPanel implements ActionListener {
+    // 필드 : 볼 관리 리스트와 로거
+    private final List<Ball23> ballsList = new ArrayList<>(); // 볼들을 관리할 리스트
     private static final Logger logger = Logger.getLogger(BallPanel.class.getName());
-    
- public static void logging(Ball23 ball) {
+
+    public static void logging(Ball23 ball) {
         logger.log(Level.INFO, "Max X: " + ball.getMaxX());
         logger.log(Level.INFO, "Min X: " + ball.getMinX());
         logger.log(Level.INFO, "Max Y: " + ball.getMaxY());
@@ -36,15 +34,13 @@ class BallPanel extends JPanel implements ActionListener {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                repaint(); //매 50ms 마다 재설정
+                repaint(); // 매 50ms 마다 재설정
             }
-        }, 0, 50);  //0ms 후 시작, 50ms 주기로 실행
+        }, 0, 50); // 0ms 후 시작, 50ms 주기로 실행
     }
 
-   
-    
     // 볼 추가 메서드
-    public void addBall(Ball23 ball) throws AlreadyExistException{
+    public void addBall(Ball23 ball) throws AlreadyExistException {
         if (ball == null) {
             throw new NullPointerException("Ball cannot be null");
         }
@@ -53,12 +49,12 @@ class BallPanel extends JPanel implements ActionListener {
         }
         ballsList.add(ball);
         logger.info("Ball added: " + ball);
-        repaint(); //화면 갱신
+        repaint(); // 화면 갱신
     }
 
-     // 볼 제거 메서드 (Ball로 제거)
+    // 볼 제거 메서드 (Ball로 제거)
     public void removeBall(Ball23 ball) {
-        if(ball == null) {
+        if (ball == null) {
             throw new NullPointerException("Ball cannot be null");
         }
         if (!ballsList.contains(ball)) {
@@ -66,16 +62,16 @@ class BallPanel extends JPanel implements ActionListener {
         }
         ballsList.remove(ball);
         logger.info("Ball removed: " + ball);
-        repaint(); //화면 갱신
+        repaint(); // 화면 갱신
     }
 
-    //볼 제거 메서드 (index 로 제거)
+    // 볼 제거 메서드 (index 로 제거)
     public void removeBall(int index) {
         if (index < 0 || index >= ballsList.size()) {
-            throw new IndexOutOfBoundsException("Invalid index: "+ index);
+            throw new IndexOutOfBoundsException("Invalid index: " + index);
         }
         Ball23 removedBall = ballsList.remove(index);
-        logger.info("Ball removed at index" +index + ": " + removedBall);
+        logger.info("Ball removed at index" + index + ": " + removedBall);
         repaint();
     }
 
@@ -84,33 +80,33 @@ class BallPanel extends JPanel implements ActionListener {
         return ballsList.size();
     }
 
-    //특정 위치의 볼을 가져오는 메서드
+    // 특정 위치의 볼을 가져오는 메서드
     public Ball23 getBall(int index) {
-        if (index <0 || index >= ballsList.size()) {
+        if (index < 0 || index >= ballsList.size()) {
             throw new IndexOutOfBoundsException("Invalid index: " + index);
         }
         return ballsList.get(index);
     }
 
-    //관리 중인 모든 볼을 그리는 메서드 (paintComponent 재정의)
-@Override
-protected void paintComponent(Graphics g) {
-    super.paintComponent(g);
-    for (Ball23 ball : ballsList) {
-        if (ball instanceof PaintableBall) {
-            ((PaintableBall) ball).paint(g);
+    // 관리 중인 모든 볼을 그리는 메서드 (paintComponent 재정의)
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        for (Ball23 ball : ballsList) {
+            if (ball instanceof PaintableBall) {
+                ((PaintableBall) ball).paint(g);
+            }
         }
+        logger.info("그릴 수 있는 모든 공들이 그려졌습니다.");
     }
-    logger.info("그릴 수 있는 모든 공들이 그려졌습니다.");
-   } 
 
-   @Override
-   public void actionPerformed(ActionEvent e) {
-    for (Ball23 ball : ballsList) { //수정: ballsList 사용
-        if( ball instanceof PaintableBall) { // paintableBall인지 확인
-            ((PaintableBall) ball).move(); //이동 호출
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        for (Ball23 ball : ballsList) { // 수정: ballsList 사용
+            if (ball instanceof PaintableBall) { // paintableBall인지 확인
+                ((PaintableBall) ball).move(); // 이동 호출
+            }
         }
+        repaint();
     }
-    repaint();
-   }
 }
