@@ -1,7 +1,11 @@
 package com.nhnacademy.game;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class Ball {
- 
+
+    static final Logger logger = LoggerFactory.getLogger(Ball.class);
 
     int x;
     int y;
@@ -12,10 +16,10 @@ public class Ball {
             throw new InvalidSizeException();
         }
 
-        if ((x == Integer.MIN_VALUE)
-                || (y == Integer.MIN_VALUE)
-                || ((Integer.MAX_VALUE - radius) < Math.abs(x))
-                || ((Integer.MAX_VALUE - radius) < Math.abs(y))) {
+        if (((x < 0) && (x < (Integer.MIN_VALUE + radius)))
+                || ((y < 0) && (y < (Integer.MIN_VALUE + radius)))
+                || ((x > 0) && (x > (Integer.MAX_VALUE - radius)))
+                || ((y > 0) && (y > (Integer.MAX_VALUE - radius)))) {
             throw new OutOfBoundsException();
         }
 
@@ -28,8 +32,16 @@ public class Ball {
         return x;
     }
 
+    protected void setX(int x) {
+        this.x = x;
+    }
+
     public int getY() {
         return y;
+    }
+
+    protected void setY(int y) {
+        this.y = y;
     }
 
     public int getRadius() {
@@ -62,6 +74,7 @@ public class Ball {
 
     @Override
     public String toString() {
-        return String.format("[(%d,%d),%d]", x, y, radius);
+        return String.format("[(%d,%d),%d]",
+                getX(), getY(), getRadius());
     }
 }
