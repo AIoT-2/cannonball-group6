@@ -11,8 +11,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class World extends JPanel {
-    
-    private static final Logger logger = LoggerFactory.getLogger(World.class);
+
+    static final Logger logger = LoggerFactory.getLogger(World.class);
+
     List<Ball> ballList = new LinkedList<>();
 
     public void add(Ball ball) {

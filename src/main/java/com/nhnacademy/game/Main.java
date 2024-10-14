@@ -6,27 +6,28 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class Main {
+    static final Logger logger = LoggerFactory.getLogger(Main.class);
+    static final int BALL_COUNT = 10;
+    static final int FRAME_WIDTH = 500;
+    static final int FRAME_HEIGHT = 400;
     public static void main(String[] args) {
-        Logger logger = LoggerFactory.getLogger(Main.class);
-
         JFrame frame = new JFrame();
 
-        frame.setSize(500, 400);
+        frame.setSize(FRAME_WIDTH, FRAME_HEIGHT);
 
-        World world = new World();
+        BoundedWorld world = new BoundedWorld();
         frame.add(world);
         frame.setVisible(true);
 
-        MovableBall ball = new MovableBall(50, 50, 20);
-        ball.setDX(10);
-        ball.setDY(20);
-        world.add(ball);
-        logger.trace("{},{}", ball.getX(), ball.getY());
-        for (int i = 0; i < 10; i++) {
-            ball.move();
-            logger.trace("{},{}", ball.getX(), ball.getY());
-        }
+        world.setDT(10);
+        world.setMaxMoveCount(0);
 
-        frame.repaint();
+        world.add(new PaintableBall(FRAME_WIDTH / 2, FRAME_HEIGHT / 2, 50));
+        MovableBall ball = new MovableBall(50, 50, 20);
+        ball.setDX(3);
+        ball.setDY(1);
+        world.add(ball);
+
+        world.run();
     }
 }

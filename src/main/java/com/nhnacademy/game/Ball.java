@@ -1,5 +1,8 @@
 package com.nhnacademy.game;
 
+import java.awt.Rectangle;
+import java.util.UUID;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -7,11 +10,16 @@ public class Ball {
 
     static final Logger logger = LoggerFactory.getLogger(Ball.class);
 
+    UUID id;
+
+    String name;
+
     int x;
     int y;
+
     int radius;
 
-    public Ball(int x, int y, int radius) {
+    public Ball(UUID id, int x, int y, int radius) {
         if (radius <= 0) {
             throw new InvalidSizeException();
         }
@@ -23,9 +31,31 @@ public class Ball {
             throw new OutOfBoundsException();
         }
 
+        this.id = id;
+        this.name = id.toString();
         this.x = x;
         this.y = y;
         this.radius = radius;
+    }
+
+    public Ball(String id, int x, int y, int radius) {
+        this(UUID.fromString(id), x, y, radius);
+    }
+
+    public Ball(int x, int y, int radius) {
+        this(UUID.randomUUID(), x, y, radius);
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getX() {
@@ -72,9 +102,23 @@ public class Ball {
         return 2 * getRadius();
     }
 
+    public boolean isCollision(Ball ball) {
+        return !((ball.getMaxX() < getMinX())
+                || (ball.getMinX() > getMaxX())
+                || (ball.getMaxY() < getMinY())
+                || (ball.getMinY() > getMaxY()));
+    }
+
+    public Rectangle intersection(Ball ball) {
+        Rectangle rect1 = new Rectangle(getMinX(), getMinY(), getWidth(), getHeight());
+        Rectangle rect2 = new Rectangle(ball.getMinX(), ball.getMinY(), ball.getWidth(), ball.getHeight());
+
+        return rect1.intersection(rect2);
+    }
+
     @Override
     public String toString() {
-        return String.format("[(%d,%d),%d]",
-                getX(), getY(), getRadius());
+        return String.format("[%s, (%d,%d),%d]",
+                getId(), getX(), getY(), getRadius());
     }
 }
