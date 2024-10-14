@@ -3,7 +3,10 @@ package com.nhnacademy.game;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.UUID;
 import java.util.logging.Logger;
+
+import java.util.Random;
 
 
 // PaintableBall 클래스 : 색상 정보를 포함한 그릴 수 있는 공 객체
@@ -13,25 +16,65 @@ public class PaintableBall extends Ball23 {
     //기본 색 정의 (Google 스타일 가이드에 따르면 상수는 대문자 및 밑줄로 표기)
     private static final Color DEFAULT_COLOR = Color.BLACK;
 
+    private final UUID id; //고유 식별자
+    private String name; //공 이름
     private Color color;
     public int dx; //x축 변위량
     public int dy; //Y축 변위량
+    private static final Random RANDOM = new Random();  //Random 인스턴스 생성
 
-    // 색을 지정하는 생성자
-    public PaintableBall(int x, int y, int radius, Color color, int dx, int dy) {
-        super(x, y, radius);  //부모 클래스인 Ball의 생성자 호출
-        this.color = color;   //PaintableBall의 색상 설정
+    //고유 식별자를 포함하는 생성자
+    public PaintableBall(String id, String name, int x, int y, int radius, Color color, int dx, int dy) {
+        super(x, y, radius); //부모 클래스인 Ball의 생성자 호출
+
+        //UUID 형식 검증
+        if (id != null) {
+            try {
+                this.id = UUID.fromString(id);
+            } catch (IllegalArgumentException e) {
+                throw new IllegalArgumentException("Invalid UUID format: " + id, e);
+            }
+        } else {
+            this.id = UUID.randomUUID();  //UUID가 null일 경우 자동 생성 
+        }
+
+        this.name = name != null ? name : this.id.toString();  //이름 설정 또는 ID로 기본설정
+
+        // 색상 설정: 랜덤 색상 생성
+        this.color = new Color(RANDOM.nextInt(256),RANDOM.nextInt(256),RANDOM.nextInt(256));
+
         this.dx = dx;
         this.dy = dy;
 
-        //Trace 로그 추가
-        logger.finest(String.format("PaintableBall created at (%d, %d) with radius: %d, dx: %d, dy: %d", x, y, radius, dx, dy));
+        // Trace 로그 추가
+        logger.info(String.format("PaintableBall created [ID: %s, Name: %s] at (%d, %d) with radius: %d, dx: %d, dy: %d",
+                                        this.id, this.name, x, y, radius, dx, dy));
     }
 
     //색을 지정하지 않는 생성자 (기본 색을 사용)
     public PaintableBall(int x, int y, int radius, int dx, int dy) {
-        this(x, y, radius, DEFAULT_COLOR, dx, dy);   //위의 생성자를 호출하여 기본 색을 사용
+        this(null, null, x, y, radius, DEFAULT_COLOR, dx, dy);   //위의 생성자를 호출하여 기본 색을 사용
     }
+
+
+    // ID 반환
+    public UUID getID() {
+        return id;
+    }
+
+    //이름 반환
+    public String getName(){
+        return name;
+    }
+
+    //이름 설정
+    public void setName(String name) {
+        this.name = name;
+        logger.info(String.format("Name changed to %s for PaintableBall [ID: %s]", name, id));
+    }
+
+
+    
 
     public int getDX() {
         return dx;
@@ -88,12 +131,12 @@ public class PaintableBall extends Ball23 {
         g.setColor(prevColor);
 
         // 그릴 때마다 로그 출력
-        logger.finest(String.format("Ball painted at (%d, %d) with color: %s", x, y, color.toString()));
+        logger.finest(String.format("Ball painted at (%s, %s) with color: %s", id, name, x, y, color.toString()));
     }
 
 
     @Override
     public String toString() {
-        return String.format("[(%d, %d), %d, %s]", x, y, radius, color.toString());
+        return String.format("[(%s, %s), %d, %s]", id, name, x, y, radius, color.toString());
     }
 }

@@ -24,7 +24,9 @@ class Main {
         // 공 추가 예시
         for ( int i= 0; i<5; i++){
             int radius = new Random().nextInt(41)+10; //10~50의 반지름
-            PaintableBall ball2 = new PaintableBall(100, 100, radius, Color.RED, 0, 0);
+            int dx = new Random().nextInt(21)+10; //10~30의 랜덤 dx
+            int dy = new Random().nextInt(21) + 10; //10~30의 랜덤 dy
+            PaintableBall ball2 = new PaintableBall(100, 100, radius, dx, dy);
             MovableWorld.addBall(ball2);
         }
         //공 이동 시작
@@ -89,9 +91,16 @@ public class MovableWorld extends JPanel {
             int dx = random.nextInt(21) + 10; //10~30
             int dy = random.nextInt(21) + 10; //10~30
 
-            // 볼을 이동시키고, 위치를 제한
+            // 볼의 현재 변위량을 설정
             ball.setDX(dx*(random.nextBoolean()? 1: -1)); //x 축 이동
             ball.setDY(dy * (random.nextBoolean() ? 1: -1)); //y축 이동
+
+
+            //로그 추가
+            System.out.printf("Set dx: %d, dy: %d for ball with ID: %s%n", ball.getDX(), ball.getDY(), ball.getID());
+
+
+            // 볼 이동
             ball.move();
         }
 
