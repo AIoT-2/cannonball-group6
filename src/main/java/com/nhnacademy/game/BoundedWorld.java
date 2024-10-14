@@ -17,8 +17,8 @@ public class BoundedWorld extends MovableWorld {
                 Ball ball = getBall(i);
                 if (ball instanceof MovableBall) {
                     MovableBall movableBall = (MovableBall) ball;
-                    int x2 = movableBall.getCenterX() + movableBall.getDX();
-                    int y2 = movableBall.getCenterY() + movableBall.getDY();
+                    int x2 = movableBall.getCenterX() + movableBall.getMotion().getDX();
+                    int y2 = movableBall.getCenterY() + movableBall.getMotion().getDY();
                     int x3 = x2;
                     int y3 = y2;
 
@@ -26,18 +26,18 @@ public class BoundedWorld extends MovableWorld {
 
                         if (x2 - movableBall.getRadius() < getBounds().getMinX()) {
                             x3 = 2 * (movableBall.getMaxX() - movableBall.getRadius()) - x2;
-                            movableBall.setDX(-movableBall.getDX());
+                            movableBall.setMotion(-movableBall.getMotion().getDX(), movableBall.getMotion().getDY());
                         } else if (x2 + movableBall.getRadius() > getBounds().getMaxX()) {
                             x3 = 2 * (movableBall.getMinX() + movableBall.getRadius()) - x2;
-                            movableBall.setDX(-movableBall.getDX());
+                            movableBall.setMotion(-movableBall.getMotion().getDX(), movableBall.getMotion().getDY());
                         }
 
                         if (movableBall.getMinY() < getBounds().getMinY()) {
                             y3 = 2 * (movableBall.getMaxY() - movableBall.getRadius()) - y2;
-                            movableBall.setDY(-movableBall.getDY());
+                            movableBall.setMotion(movableBall.getMotion().getDX(), -movableBall.getMotion().getDY());
                         } else if (movableBall.getMaxY() > getBounds().getMaxY()) {
                             y3 = 2 * (movableBall.getMinY() + movableBall.getRadius()) - y2;
-                            movableBall.setDY(-movableBall.getDY());
+                            movableBall.setMotion(movableBall.getMotion().getDX(), -movableBall.getMotion().getDY());
                         }
                     }
                     movableBall.moveTo(x3, y3);
@@ -51,12 +51,14 @@ public class BoundedWorld extends MovableWorld {
 
                                 if (intersection.getWidth() != ball.getWidth()
                                         && intersection.getWidth() != otherBall.getWidth()) {
-                                    movableBall.setDX(-movableBall.getDX());
+                                    movableBall.setMotion(-movableBall.getMotion().getDX(),
+                                            movableBall.getMotion().getDY());
                                 }
 
                                 if (intersection.getHeight() != ball.getHeight()
                                         && intersection.getHeight() != otherBall.getHeight()) {
-                                    movableBall.setDY(-movableBall.getDY());
+                                    movableBall.setMotion(movableBall.getMotion().getDX(),
+                                            -movableBall.getMotion().getDY());
                                 }
                             }
 

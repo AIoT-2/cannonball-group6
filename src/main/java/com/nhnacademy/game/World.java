@@ -29,10 +29,18 @@ public class World extends JPanel {
                 || (getBounds().getMaxX() < ball.getMaxX())
                 || (ball.getMinY() < getBounds().getMinY())
                 || (getBounds().getMaxY() < ball.getMaxY())) {
+            logger.error("world : {}, ball : {}", getBounds(), ball);
             throw new OutOfBoundsException();
-
         }
+
+        for (int i = 0; i < getBallCount(); i++) {
+            if (ballList.get(i).isCollision(ball)) {
+                throw new DuplicatedBoundsException();
+            }
+        }
+
         ballList.add(ball);
+
         logger.info("볼이 추가되었습니다: {}", ball);
     }
 

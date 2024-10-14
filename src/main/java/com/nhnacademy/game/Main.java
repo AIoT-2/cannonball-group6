@@ -10,6 +10,7 @@ public class Main {
     static final int BALL_COUNT = 10;
     static final int FRAME_WIDTH = 500;
     static final int FRAME_HEIGHT = 400;
+
     public static void main(String[] args) {
         JFrame frame = new JFrame();
 
@@ -24,8 +25,7 @@ public class Main {
 
         world.add(new PaintableBall(FRAME_WIDTH / 2, FRAME_HEIGHT / 2, 50));
         MovableBall ball = new MovableBall(50, 50, 20);
-        ball.setDX(3);
-        ball.setDY(1);
+        ball.setMotion(new PositionVector(3, 1));
         world.add(ball);
 
         world.run();

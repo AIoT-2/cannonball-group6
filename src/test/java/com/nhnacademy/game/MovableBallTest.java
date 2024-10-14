@@ -61,8 +61,8 @@ public class MovableBallTest {
                 ball.move();
             }
 
-            assertEquals(targetX, ball.getX());
-            assertEquals(targetY, ball.getY());
+            assertEquals(targetX, ball.getCenterX());
+            assertEquals(targetY, ball.getCenterY());
         });
     }
 
