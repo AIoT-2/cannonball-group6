@@ -53,11 +53,11 @@ public class MovableBall extends PaintableBall {
 
             //Y축 경계 검사
             if (newBounds.y < boundedArea.y) { //위쪽 벽에 부딪힘
-                region.y = boundedArea.y //위쪽 벽에 맞게 조정
+                region.y = boundedArea.y; //위쪽 벽에 맞게 조정
                 dy = Math.abs(dy); //아래로 진행
             } else if (newBounds.y + newBounds.height > boundedArea.y + boundedArea.height ) {//아래쪽 벽에 부딪힘
                 region.y = boundedArea.y + boundedArea.height - region.height; //아래쪽 벽에 맞게 조정
-                dy = -Math.abs(dy) //위쪽으로 진행
+                dy = -Math.abs(dy); //위쪽으로 진행
             }
         }
             //이동 후 위치를 로그로 기록

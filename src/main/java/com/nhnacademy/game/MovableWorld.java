@@ -65,7 +65,8 @@ class Main {
                         System.out.println(e.getMessage() + "해당 볼을 폐기하고 다시 시도합니다.");
                     }
                 }
-            }).nextInt(21)+10; //10~30의 랜덤 dx
+            }
+            int dx= new Random().nextInt(21)+10; //10~30의 랜덤 dx
             int dy = new Random().nextInt(21) + 10; //10~30의 랜덤 dy
             PaintableBall ball2 = new PaintableBall(100, 100, radius, dx, dy);
             MovableWorld.addBall(ball2);
