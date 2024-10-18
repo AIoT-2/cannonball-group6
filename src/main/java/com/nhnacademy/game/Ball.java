@@ -7,6 +7,8 @@ public class Ball {
      * @param x
      * @param y
      * @param radius
+     * @param OutOfBoundsException  ball의 영역이 정수 공간을 벗어난다.
+     * @param InvalidSizeException 반지름은 양의 정수로만 정의될 수 있다.
      */
     public Ball(int x, int y, int radius) {
         this.x = x;
@@ -19,7 +21,7 @@ public class Ball {
      * @return ball의 x축 상의 위치
      */
     public int getX() {
-        //
+        return x;
     }
 
     /**
@@ -27,14 +29,14 @@ public class Ball {
      * @return ball의 y축 상의 위치
      */
     public int getY() {
-        //
+        return y;
     }
 
     /**
      * @return ball의 반지름을 반환한다.
      */
     public int getRadius() {
-        //
+        return radius;
     }
 
 
@@ -42,7 +44,7 @@ public class Ball {
      * @return ball의 영역 중 최소 x좌표 값
      */
     public int getMinX(){
-//
+        return getX() - getRadius();
     }
 
 
@@ -51,7 +53,7 @@ public class Ball {
      * @return ball의 영역 중 최대 x좌표 값
      */
     public int getMaxX(){
-        //
+        return getX() + getRadius();
     }
 
     /**
@@ -59,7 +61,7 @@ public class Ball {
      * @return ball의 영역 중 최소 y좌표 값
      */
     public int getMinY(){
-        //코드 추가
+        return getY() - getRadius();
     }
 
     /**
@@ -67,7 +69,7 @@ public class Ball {
      * @return ball의 영역 중 최대 y좌표 값
      */
     public int getMaxY(){
-        // 코드 추가
+        return getY() + getRadius();
     }
 
 
@@ -76,7 +78,7 @@ public class Ball {
      * @return ball의 영역 넓이(x축의 길이)
      */
     public int getWidth(){
-        //코드 추가
+        return 2*getRadius();
     }
 
 
@@ -85,7 +87,7 @@ public class Ball {
      * @return ball의 영역 높이(y축의 길이)
      */
     public int getHeight(){
-        //코드 추가
+        return 2*getRadius();
     }
 
 
